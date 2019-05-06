@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 
 todoRouter.get('/', (req, res) => {
     // lock the order down to something
-    const queryString = `SELECT * FROM "todo" ORDER BY "id" ASC`;
+    const queryString = `SELECT * FROM "todo" ORDER BY "id" ASC;`;
 
     pool.query(queryString)
         .then((response) => {
@@ -32,8 +32,30 @@ todoRouter.post('/', (req, res) => {
         });
 });
 
-todoRouter.put('/', (req, res) => {});
+todoRouter.put('/:id', (req, res) => {
+    const queryString = `UPDATE "todo" SET "completed"=true WHERE "id"=$1;`;
 
-todoRouter.delete('/', (req, res) => {});
+    pool.query(queryString, [req.params.id])
+        .then((response) => {
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log(`Error updating DB: ${err}`);
+            res.sendStatus(500);
+        });
+});
+
+todoRouter.delete('/:id', (req, res) => {
+    const queryString = `DELETE FROM "todo" WHERE "id"=$1`;
+
+    pool.query(queryString, [req.params.id])
+        .then((response) => {
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log(`Error deleting from DB: ${err}`);
+            res.sendStatus(500);
+        });
+});
 
 module.exports = todoRouter;
