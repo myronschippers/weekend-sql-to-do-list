@@ -1,3 +1,18 @@
 h1 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+.task {
+    background-color: #efefef;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.task + .task {
+    margin-top: 15px;
+}
+
+.task-isComplete {
+    background-color: greenyellow;
+    border-color: forestgreen;
+}
